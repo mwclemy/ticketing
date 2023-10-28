@@ -15,10 +15,10 @@ const app = express();
 app.set("trust proxy", true);
 app.use(json());
 app.use(
-  cookieSession({
-    signed: false,
-    secure: true,
-  })
+    cookieSession({
+        signed: false,
+        secure: true,
+    })
 );
 
 app.use(currentUserRouter);
@@ -27,25 +27,25 @@ app.use(signoutRouter);
 app.use(signupRouter);
 
 app.all("*", async () => {
-  throw new NotFoundError();
+    throw new NotFoundError();
 });
 
 app.use(errorHandler);
 
 const start = async () => {
-  if (!process.env.JWT_KEY) {
-    throw new Error("JWT_KEY is mot defined.");
-  }
+    if (!process.env.JWT_KEY) {
+        throw new Error("JWT_KEY is mot defined.");
+    }
 
-  try {
-    await mongoose.connect("mongodb://auth-mongo-srv:27017/auth");
-    console.log("Connected to mongodb.");
-  } catch (error) {
-    console.error(error);
-  }
-  app.listen(3000, () => {
-    console.log("Listening on port 3000!");
-  });
+    try {
+        await mongoose.connect("mongodb://auth-mongo-srv:27017/auth");
+        console.log("Connected to mongodb.");
+    } catch (error) {
+        console.error(error);
+    }
+    app.listen(3000, () => {
+        console.log("Listening on port 3000!");
+    });
 };
 
 start();
