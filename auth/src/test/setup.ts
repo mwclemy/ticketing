@@ -4,6 +4,8 @@ import { app } from '../app'
 
 let mongo: any
 beforeAll(async () => {
+    process.env.JWT_KEY = 'asdfasdf';
+
     mongo = await MongoMemoryServer.create()
     const uri = mongo.getUri()
 
@@ -11,9 +13,10 @@ beforeAll(async () => {
 })
 
 beforeEach(async () => {
-    const collections = await mongoose.connection.db.collections()
+    const collections = mongoose.connection.collections
 
-    for (let collection of collections) {
+    for (const key in collections) {
+        const collection = collections[key]
         await collection.deleteMany({})
     }
 })
